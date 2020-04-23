@@ -18,14 +18,14 @@ def add_cart_view(request, slug):
 			quant+=1
 			order_item.quantity = quant
 			order_item.save(update_fields=['quantity'])           #if item exists, increase the qunatity
-			messages.info(request, "This item quantity is updated")
+			messages.info(request, "The item quantity is updated")
 		else:
 			uzer.oredereditems.add(order_item)   #if item doesn't exists, add it
 			messages.info(request,"This item is added to your cart")
 	else:
 		order_create = order.objects.create(user=request.user)   #if user doesn't exists, create the model order
 		order_create.oredereditems.add(oredereditems=order_item)   #add the instance of the cart model
-		messages.info(request, "This item is added to your cart")
+		messages.success(request, "This item is added to your cart")
 	return redirect('home')
 
 def remove_cart_view(request, slug):
@@ -40,7 +40,7 @@ def remove_cart_view(request, slug):
 			cart_obj.save(update_fields=['quantity'])
 		else:
 			cart_qs.delete()
-		messages.info(request, "Your Cart is updated")
+		messages.success(request, "Your Cart is updated")
 	else:
 		messages.info(request, "This item is not in your cart")
 	return redirect('home')
