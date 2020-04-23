@@ -13,6 +13,13 @@
 	<nav class="navbar navbar-expand-sm navbar-light" style="background-color: #ffe36e;">
 		 <a class="navbar-brand" href="#">Navbar</a>
 	</nav>
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 	<div class="container">
 		<div class="row">
 	{% for product in products %}
