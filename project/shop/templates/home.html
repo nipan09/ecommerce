@@ -25,7 +25,7 @@
 						<p class="card-text">{{product.preview_text}}</p>
 						<p class="card-text"> Price: Rs.{{product.price}}</p>
 						<a href="{% url 'addCart' product.slug %}" class="btn btn-success">Add to Cart</a>
-						<a href="#" class="btn btn-danger">Remove from Cart</a>
+						<a href="{% url 'removeCart' product.slug %}" class="btn btn-danger">Remove from Cart</a>
 					</div>
 				</div>
 			</div>
