@@ -4,7 +4,11 @@ from django.contrib import messages
 
 def home_view(request):
 	context = products.objects.all()
-	return render(request, 'home.html', {'products':context})
+	quant = 0
+	cart_qs = [int(obj.quantity) for obj in cart.objects.filter(user=request.user)]
+	for i in range(len(cart_qs)):
+		quant = quant+cart_qs[i]
+	return render(request, 'home.html', {'products':context, 'quant':quant})
 
 def add_cart_view(request, slug):
 	item = get_object_or_404(products, slug=slug)
@@ -44,3 +48,4 @@ def remove_cart_view(request, slug):
 	else:
 		messages.info(request, "This item is not in your cart")
 	return redirect('home')
+
