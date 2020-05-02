@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<title>Django Ecommerce</title>
+</head>
+<body>
+  <div class="my-3">
+  <h4> Your Cart </h4>
+  </div>
+  <div class='container mr-4 ml-3 col-5'>
+  <table class="table table-hover" style="width:100%">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" class="text-center">Product Name</th>
+      <th scope="col" class="text-center">Quantity</th>
+      <th scope="col" class="text-center">Price</th>
+      <th scope="col" class="text-center"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cart in carts %}
+    <tr>
+       <td>{{ forloop.counter }}</td>
+       <td class="text-center">{{ cart.item.name }}</td>
+       <td class="text-center">{{ cart.quantity }}</td>
+       <td class="text-center">Rs.{{ cart.get_total }}</td>
+       <td class="text-center"><a href="#"><button type="button" class="btn btn-primary">Order Now</button></a></td>
+     </tr>
+     {% endfor %}
+</table>
+</div>
+</body>
+</html>
