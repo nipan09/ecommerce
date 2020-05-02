@@ -17,6 +17,7 @@ class products(models.Model):
 class cart(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)         #user, FornK: different cart req (quantity of each prdt )
 	item = models.ForeignKey(products, on_delete=models.CASCADE)     #item, FornK: One2One will not allow that prdt whatever may be the user is. 
+	slug = models.CharField(max_length=50, default='#')
 	quantity = models.IntegerField(default=1)                        #quantity: responsible for FornK @user
 	created_on = models.DateTimeField(auto_now_add=True)
 

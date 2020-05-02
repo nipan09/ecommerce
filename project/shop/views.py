@@ -21,7 +21,7 @@ def add_cart_view(request, slug):
 		cart_item.save(update_fields=['quantity'])
 		messages.info(request, "The item quantity is updated")
 	else:
-		cart.objects.create(user=request.user, item=item)
+		cart.objects.create(user=request.user, item=item, slug=slug)
 		messages.info(request,"This item is added to your cart")
 	return redirect('home')
 
@@ -45,6 +45,5 @@ def remove_cart_view(request, slug):
 def cart_view(request):
 	#order_qs = order.objects.filter(user=request.user, ordered=False)
 	cart_qs = cart.objects.filter(user=request.user)
-	order_qs = order.objects.filter(user=request.user)
 	if cart_qs.exists():
 		return render(request,'cart.html',{'carts':cart_qs})
