@@ -49,3 +49,8 @@ def remove_cart_view(request, slug):
 		messages.info(request, "This item is not in your cart")
 	return redirect('home')
 
+def cart_view(request):
+	#order_qs = order.objects.filter(user=request.user, ordered=False)
+	cart_qs = cart.objects.filter(user=request.user)
+	if cart_qs.exists():
+		return render(request,'cart.html',{'carts':cart_qs})
