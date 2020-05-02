@@ -12,24 +12,17 @@ def home_view(request):
 
 def add_cart_view(request, slug):
 	item = get_object_or_404(products, slug=slug)
-	order_item, created = cart.objects.get_or_create(user=request.user, item=item)    #order_item --> instance of the retrieved or created object
-	#checking for if the product exists:
-	order_qs = order.objects.filter(user=request.user, ordered=False)
-	if order_qs.exists():                    #if user exists in False ordered model
-		uzer = order_qs[0]
-		if uzer.oredereditems.filter(item__slug=item.slug).exists():
-			quant = order_item.quantity
-			quant+=1
-			order_item.quantity = quant
-			order_item.save(update_fields=['quantity'])           #if item exists, increase the qunatity
-			messages.info(request, "The item quantity is updated")
-		else:
-			uzer.oredereditems.add(order_item)   #if item doesn't exists, add it
-			messages.info(request,"This item is added to your cart")
+	cart_qs = cart.objects.filter(user=request.user, item=item)    #cart_qs --> instance of the retrieved or created object
+	if cart_qs.exists():
+		cart_item = cart_qs[0]
+		quant = cart_item.quantity
+		quant+=1
+		cart_item.quantity = quant
+		cart_item.save(update_fields=['quantity'])
+		messages.info(request, "The item quantity is updated")
 	else:
-		order_create = order.objects.create(user=request.user)   #if user doesn't exists, create the model order
-		order_create.oredereditems.add(oredereditems=order_item)   #add the instance of the cart model
-		messages.success(request, "This item is added to your cart")
+		cart.objects.create(user=request.user, item=item)
+		messages.info(request,"This item is added to your cart")
 	return redirect('home')
 
 def remove_cart_view(request, slug):
@@ -52,5 +45,6 @@ def remove_cart_view(request, slug):
 def cart_view(request):
 	#order_qs = order.objects.filter(user=request.user, ordered=False)
 	cart_qs = cart.objects.filter(user=request.user)
+	order_qs = order.objects.filter(user=request.user)
 	if cart_qs.exists():
 		return render(request,'cart.html',{'carts':cart_qs})
