@@ -28,16 +28,6 @@ class cart(models.Model):
 		floattotal = float("{0:.2f}".format(total))
 		return floattotal
 
-#order model is needed for incrementing quantity in cart model.
-class order(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)   #user, ForeignKey: one user --> two order (ordered=True, ordered=False)
-	oredereditems = models.ManyToManyField(cart)               #ordrditm, Man2Man: one model(True/False) should allow to add more than one items.
-	ordered = models.BooleanField(default=False)               #ordered, Bool: responsible for ForeignKey to user in this model
-	created = models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return self.user.username
-
 def slug_generator(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = unique_slug_generator(instance)
