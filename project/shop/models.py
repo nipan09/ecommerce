@@ -23,6 +23,11 @@ class cart(models.Model):
 	def __str__(self):
 		return f'{self.quantity} of {self.item.name}'
 
+	def get_total(self):
+		total = self.item.price * self.quantity
+		floattotal = float("{0:.2f}".format(total))
+		return floattotal
+
 #order model is needed for incrementing quantity in cart model.
 class order(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)   #user, ForeignKey: one user --> two order (ordered=True, ordered=False)
