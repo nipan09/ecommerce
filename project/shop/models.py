@@ -29,6 +29,16 @@ class cart(models.Model):
 		floattotal = float("{0:.2f}".format(total))
 		return floattotal
 
+class order(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	item = models.ForeignKey(cart, on_delete=models.CASCADE)
+	slug = models.SlugField()
+	quantity = models.IntegerField()
+	created_on = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.quantity} of {self.item.item.name}'
+	
 def slug_generator(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = unique_slug_generator(instance)
