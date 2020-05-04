@@ -1,4 +1,4 @@
-from shop.models import products, cart
+from shop.models import products, cart, order
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
@@ -43,7 +43,15 @@ def remove_cart_view(request, slug):
 	return redirect('home')
 
 def cart_view(request):
-	#order_qs = order.objects.filter(user=request.user, ordered=False)
+	order_qs = order.objects.filter(user=request.user)
 	cart_qs = cart.objects.filter(user=request.user)
-	if cart_qs.exists():
-		return render(request,'cart.html',{'carts':cart_qs})
+	return render(request,'cart.html',{'carts':cart_qs,'orders':order_qs})
+
+def order_view(request, slug):
+	cart_qs = cart.objects.filter(user=request.user, slug=slug)
+	cart_item = cart_qs[0]
+	order.objects.create(user=request.user, item=cart_item, slug=slug, quantity=cart_item.quantity)
+	return redirect('cart')
+
+
+
