@@ -1,3 +1,5 @@
+{% load static %}
+{% load order_slug %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +13,8 @@
   <div class="my-3">
   <h4> Your Cart </h4>
   </div>
-  <div class='container mr-4 ml-3 col-5'>
+  {% if carts %}
+  <div class='container mx-4 my-5 col-5'>
   <table class="table table-hover" style="width:100%">
   <thead>
     <tr>
@@ -29,10 +32,19 @@
        <td class="text-center">{{ cart.item.name }}</td>
        <td class="text-center">{{ cart.quantity }}</td>
        <td class="text-center">Rs.{{ cart.get_total }}</td>
-       <td class="text-center"><a href="#"><button type="button" class="btn btn-primary">Order Now</button></a></td>
+       <td class="text-center">
+        {% if cart.slug|order_slug %}
+              <h6>Ordered</h6>
+        {% else %}
+          <a href="{% url 'order' cart.slug %}"><button type="button" class="btn btn-primary">Order Now</button></a>
+        {% endif %}
+      </td>
      </tr>
      {% endfor %}
 </table>
 </div>
+{% else %}
+<h4> You don't have any active cart </h4>
+{% endif %}
 </body>
 </html>
