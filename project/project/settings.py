@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+#stripe
+STRIPE_SECRET_KEY = 'sk_test_o9ACnQQffaJyxx9fxQWzlNrE00U0Gs5R7Q'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_nnGYKgpxl7AmicqNbcoGIMqQ008d6IpXgw'
