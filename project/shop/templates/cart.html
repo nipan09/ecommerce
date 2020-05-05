@@ -36,7 +36,7 @@
         {% if cart.slug|order_slug %}
               <h6>Ordered</h6>
         {% else %}
-          <a href="{% url 'order' cart.slug %}"><button type="button" class="btn btn-primary">Order Now</button></a>
+          <a href="{% url 'pay' cart.slug %}"><button type="button" class="btn btn-primary">Order Now</button></a>
         {% endif %}
       </td>
      </tr>
