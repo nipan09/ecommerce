@@ -1,6 +1,7 @@
 from shop.models import products, cart, order
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+import stripe
 
 def home_view(request):
 	context = products.objects.all()
@@ -50,6 +51,20 @@ def cart_view(request):
 def order_view(request, slug):
 	cart_qs = cart.objects.filter(user=request.user, slug=slug)
 	cart_item = cart_qs[0]
+	amount = cart_item.get_total()
+	if request.method == 'POST':
+		customer = stripe.Customer.create(
+			email = request.POST['email'],
+			name = request.POST['username'],
+			source = request.POST['stripeToken']
+			)
+		charge = stripe.Charge.create(
+			customer = customer,
+			amount = int(amount)*100,
+			currency = "inr",
+			description = cart_item.item.name,
+			)
+
 	order.objects.create(user=request.user, item=cart_item, slug=slug, quantity=cart_item.quantity)
 	return redirect('cart')
 
