@@ -1,7 +1,13 @@
 from shop.models import products, cart, order
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from .serializers import ProductsSerializer
 import stripe
+
 
 def home_view(request):
 	context = products.objects.all()
@@ -69,4 +75,25 @@ def order_view(request, slug):
 	return redirect('cart')
 
 
+class JSONResponse(HttpResponse):
+	'''
+	
+	An HttpResponse that renders its content into JSON.
+	
+	'''
 
+	def __init__self(self, data, **kwargs):
+		content = JSONRenderer().render(data)
+		kwargs['content_type'] = 'application/json'
+		super(JSONResponse, self).__init__(content, **kwargs)
+
+def product_list_api(request):
+	'''
+
+	List all the products
+
+	'''
+	if request.method == 'GET':
+		product_qs = products.objects.all()
+		serializer = ProductsSerializer(product_qs, many=True)   # many makee sure to serialize querysets instead of model instances
+		return JSONResponse(serializer.data)
