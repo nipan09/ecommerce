@@ -11,4 +11,5 @@ urlpatterns=[
      path('shop/cart', views.cart_view, name='cart'),
      path('shop/cart/payment/<slug>', view2.pay_view, name='pay'),
      path('shop/cart/order/<slug>', views.order_view, name='order'),
+     path('shop/api/products', views.product_list_api),
 ]
